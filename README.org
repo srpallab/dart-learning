@@ -1,0 +1,6 @@
+#+title: Learning Dart Language.
+#+author: Shafiqur Rahman
+#+options: h:1 num:nil toc:nil
+* Late
+  - Avoid late in try catch statements
+  - Avoid late initialization in class constructor.
