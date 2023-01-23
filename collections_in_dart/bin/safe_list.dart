@@ -8,6 +8,28 @@ void main() {
   } catch (e) {
     print(e);
   }
+
+  const notFound = 'NOT-FOUND';
+  const defaultValue = 'DEFAULT-VALUE';
+
+  final myList = SafeList(
+    defaultValue: defaultValue,
+    notFoundValue: notFound,
+    values: ['Foo', 'Bar'],
+  );
+
+  print(myList);
+  print(myList[2]);
+  print(myList.last);
+
+  myList.length = 4;
+
+  print(myList);
+
+  myList.length = 0;
+
+  print(myList.first);
+  print(myList.last);
 }
 
 class SafeList<T> extends ListBase<T> {
@@ -16,33 +38,32 @@ class SafeList<T> extends ListBase<T> {
   final List<T> _list;
 
   SafeList(
-    {
-      required this.defaultValue,
+      {required this.defaultValue,
       required this.notFoundValue,
-      List<T>? values
-    }
-  ) : _list = values ?? [];
-
-  
-  @override
-  T operator [](index) {
-    // TODO: implement []
-    throw UnimplementedError();
-  }
+      List<T>? values})
+      : _list = values ?? [];
 
   @override
-  void operator []=(index, T value) {
-    // TODO: implement []=
-  }
+  T operator [](index) => index < _list.length ? _list[index] : notFoundValue;
 
+  @override
+  void operator []=(index, T value) => _list[index] = value;
 
   @override
   int get length => _list.length;
 
   @override
   set length(newLength) {
-    // TODO: implement length
+    if (newLength <= _list.length) {
+      _list.length = newLength;
+    } else {
+      _list.addAll(List.filled(newLength - _list.length, defaultValue));
+    }
   }
 
-  
+  @override
+  T get first => _list.isNotEmpty ? _list.first : notFoundValue;
+
+  @override
+  T get last => _list.isNotEmpty ? _list.last : notFoundValue;
 }
