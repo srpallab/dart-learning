@@ -1,5 +1,10 @@
 // ignore: depend_on_referenced_packages
-import 'package:collection/collection.dart' show UnmodifiableListView;
+import 'package:collection/collection.dart'
+    show
+        UnmodifiableListView,
+        CanonicalizedMap,
+        CombinedIterableView,
+        mergeMaps;
 
 void main() {
   final names = ['Jhon', 'Jade', 'Cat'];
@@ -26,8 +31,14 @@ void main() {
   } catch (e) {
     print(e);
   }
-  
+
   print(person._siblings);
+  print('================');
+  testCanonicalizedMap();
+  print('================');
+  testCombinedItrerableView();
+  print('================');
+  margeMaps();
 }
 
 class Person {
@@ -41,4 +52,61 @@ class Person {
 
   @override
   String toString() => "Name: $name";
+}
+
+void testCanonicalizedMap() {
+  const info = {
+    'name': 'Foo',
+    'age': 20,
+    'sex': 'Male',
+    'height': 1.8,
+  };
+
+  final canonMap = CanonicalizedMap.from(
+    info,
+    (key) {
+      return key.length;
+    },
+  );
+
+  print(canonMap);
+}
+
+void testCombinedItrerableView() {
+  final one = Iterable.generate(3, (int i) => i);
+  final two = Iterable.generate(3, (int i) => i + 10);
+  final three = Iterable.generate(3, (int i) => i + 100);
+
+  final combined = CombinedIterableView([
+    one,
+    two,
+    three,
+  ]);
+
+  print(combined);
+  print(combined.length);
+  print(combined.isEmpty);
+}
+
+void margeMaps() {
+  const info = {
+    'name': 'Shafiqur Rahman',
+    'age': 20,
+    'height': 1.8,
+  };
+
+  const infoNew = {
+    'name': 'Shafiqur Rahman',
+    'age': 20,
+    'height': 5.8,
+    'weight': 110,
+  };
+
+  final marge = mergeMaps(
+    info,
+    infoNew,
+    value: (one, two) => two,
+  );
+
+  print(marge);
 }
