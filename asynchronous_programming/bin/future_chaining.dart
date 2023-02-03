@@ -1,4 +1,7 @@
-void main() {}
+void main() async {
+  final lenght = await getFullName().then((value) => calculateLenght(value));
+  print(lenght);
+}
 
 Future<String> getFullName() => Future.delayed(
       const Duration(seconds: 1),
