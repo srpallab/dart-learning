@@ -39,7 +39,10 @@ void _getResponse(SendPort sp) async {
   await for (var userMessage
       in rp.takeWhile((element) => element is String).cast<String>()) {
     for (var msg in messagesAndResponses.entries) {
-      if (msg.key.trim().toLowerCase() == userMessage.trim().toLowerCase()) {
+      if (
+        msg.key.trim().toLowerCase()
+        == userMessage.trim().toLowerCase()
+      ) {
         sp.send(msg.value);
         continue;
       }
